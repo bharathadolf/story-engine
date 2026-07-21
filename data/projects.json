@@ -1,0 +1,13 @@
+[
+  {
+    "id": "proj-sandbox",
+    "name": "Testing Sandbox Canvas",
+    "genre": "Developer Sandbox",
+    "logline": "Isolated sandbox environment to design and test story elements individually.",
+    "coverColor": "#059669",
+    "createdAt": "2026-07-20T19:29:48.860Z",
+    "updatedAt": "2026-07-20T21:24:26.965Z",
+    "nodeCount": 9,
+    "status": "sandbox"
+  }
+]

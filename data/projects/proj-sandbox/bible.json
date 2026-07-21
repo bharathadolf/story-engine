@@ -1,0 +1,23 @@
+{
+  "id": "bible-001",
+  "type": "bible",
+  "position": {
+    "x": 250,
+    "y": 150
+  },
+  "data": {
+    "title": "Sandbox Story",
+    "premise": "A developer tries to test individual story nodes on a local sandbox canvas.",
+    "theme": "Isolation and integration",
+    "toneContract": {
+      "pacing": "Fast-paced testing cycles",
+      "darkness": "Balanced light",
+      "adventure": "Software development coding journey"
+    },
+    "worldRules": {
+      "setting": "Vite & Express server on localhost:3000"
+    },
+    "twistMechanics": "Sudden compilation errors",
+    "status": "sandbox-bible"
+  }
+}

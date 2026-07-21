@@ -1,0 +1,237 @@
+{
+  "nodes": [
+    {
+      "id": "bible-1784576399501-180",
+      "type": "bible",
+      "position": {
+        "x": 0,
+        "y": 50
+      },
+      "data": {
+        "title": "New Screenplay Project",
+        "premise": "",
+        "theme": "",
+        "toneContract": {
+          "pacing": "Moderate pacing",
+          "darkness": "Balanced light & darkness",
+          "adventure": "Dramatic hero journey style"
+        },
+        "worldRules": {
+          "setting": "Contemporary real world"
+        },
+        "twistMechanics": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 249,
+        "height": 120
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "character-1784576452013-255",
+      "type": "character",
+      "position": {
+        "x": -360,
+        "y": 150
+      },
+      "data": {
+        "name": "New Character",
+        "role": "protagonist",
+        "strand": "",
+        "want": "",
+        "need": "",
+        "wound": "",
+        "flaw": "",
+        "arcSummary": "",
+        "appearsInScenes": [],
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 96
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "strand-1784576472341-626",
+      "type": "strand",
+      "position": {
+        "x": 360,
+        "y": 150
+      },
+      "data": {
+        "name": "Main Storyline",
+        "genre": "",
+        "timePeriod": "",
+        "protagonistRef": "",
+        "premiseSentence": "",
+        "convergenceRole": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 222,
+        "height": 93
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "character-1784576482395-166",
+      "type": "character",
+      "position": {
+        "x": -360,
+        "y": 330
+      },
+      "data": {
+        "name": "New Character",
+        "role": "protagonist",
+        "strand": "",
+        "want": "",
+        "need": "",
+        "wound": "",
+        "flaw": "",
+        "arcSummary": "",
+        "appearsInScenes": [],
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 96
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "strand-1784576483931-893",
+      "type": "strand",
+      "position": {
+        "x": 360,
+        "y": 330
+      },
+      "data": {
+        "name": "Main Storyline",
+        "genre": "",
+        "timePeriod": "",
+        "protagonistRef": "",
+        "premiseSentence": "",
+        "convergenceRole": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 222,
+        "height": 93
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "act-1784576485779-986",
+      "type": "act",
+      "position": {
+        "x": 0,
+        "y": 250
+      },
+      "data": {
+        "strandRef": null,
+        "actNumber": 1,
+        "dramaticJob": "Set up the world and trigger the main conflict",
+        "openingState": "",
+        "closingState": "",
+        "turn": "",
+        "protagonistPosition": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 245,
+        "height": 105
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "sequence-1784576487355-709",
+      "type": "sequence",
+      "position": {
+        "x": 0,
+        "y": 480
+      },
+      "data": {
+        "actRef": "",
+        "name": "New Sequence",
+        "episodeRef": null,
+        "dramaticJob": "",
+        "miniClimax": "",
+        "runtimeMins": 10,
+        "seedPlanted": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 218,
+        "height": 96
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "scene-1784576488811-401",
+      "type": "scene",
+      "position": {
+        "x": 0,
+        "y": 710
+      },
+      "data": {
+        "sequenceRef": "",
+        "slugline": "INT. NEW LOCATION - DAY",
+        "characters": [],
+        "enteringState": "",
+        "exitingState": "",
+        "turn": "",
+        "dramaticJob": "",
+        "seedPlanted": "",
+        "runtimeMins": 3,
+        "departmentsPassed": [],
+        "draftRef": null,
+        "status": "draft"
+      },
+      "measured": {
+        "width": 218,
+        "height": 167
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "character-1784582654829-282",
+      "type": "character",
+      "position": {
+        "x": -352.9268292682927,
+        "y": 502.8809523809524
+      },
+      "data": {
+        "name": "Hero Protagonist",
+        "role": "protagonist",
+        "strand": "",
+        "want": "To restore balance and protect their community from imminent threat.",
+        "need": "To learn humility, embrace collaboration, and let go of individualistic burdens.",
+        "wound": "The loss of a mentor/parent due to their own past inaction.",
+        "flaw": "Stubborn self-reliance and fear of vulnerability.",
+        "arcSummary": "",
+        "appearsInScenes": [],
+        "status": "draft",
+        "archetype": "Hero",
+        "description": "The central driving force of the story, carrying a deep moral wound but possessing high integrity.",
+        "objective": "Overcome the antagonist and complete their inner transformation."
+      },
+      "measured": {
+        "width": 240,
+        "height": 140
+      },
+      "selected": true,
+      "dragging": false
+    }
+  ],
+  "edges": []
+}

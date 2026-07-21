@@ -1,0 +1,6 @@
+{
+  "name": "Story Engine",
+  "description": "A node-based, AI-assisted screenplay and story development tool supporting multiple independent projects, featuring writers' room pipelines, visual graph nodes, and custom department passes powered by Gemini AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
