@@ -1,7 +1,12 @@
 import express from 'express';
 import path from 'path';
 import cors from 'cors';
+import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
+
+// Load environment variables
+dotenv.config({ path: path.join(process.cwd(), '.env.local') });
+dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 import projectsRouter from './src/server/routes/projects.js';
 import graphRouter from './src/server/routes/graph.js';

@@ -20,7 +20,7 @@ import SceneNode from './nodes/SceneNode.js';
 import BeatNode from './nodes/BeatNode.js';
 import QuestionNode from './nodes/QuestionNode.js';
 import DraftNode from './nodes/DraftNode.js';
-import useSidebarStore from '../store/sidebarStore.js';
+import useSidebarStore, { COMPATIBILITY_RULES } from '../store/sidebarStore.js';
 
 import { 
   Keyboard, 
@@ -69,6 +69,24 @@ function CanvasInner() {
   const { screenToFlowPosition, fitView, setCenter, fitBounds } = useReactFlow();
 
   const [showShortcuts, setShowShortcuts] = useState(false); // Default false so it is not intrusive, can open via click or keys
+  const [activeHelpTab, setActiveHelpTab] = useState<'shortcuts' | 'compatibility'>('shortcuts');
+  const connectingHandle = useSidebarStore(state => state.connectingHandle);
+
+  const onConnectStart = useCallback((event: any, { nodeId, handleType }: any) => {
+    const node = nodes.find(n => n.id === nodeId);
+    if (node) {
+      useSidebarStore.getState().setConnectingHandle({
+        nodeId,
+        handleType,
+        nodeType: node.type || ''
+      });
+    }
+  }, [nodes]);
+
+  const onConnectEnd = useCallback(() => {
+    useSidebarStore.getState().setConnectingHandle(null);
+  }, []);
+
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [boxSelectionMode, setBoxSelectionMode] = useState(false);
   const [minimapMode, setMinimapMode] = useState<'type' | 'health'>('type');
@@ -563,6 +581,8 @@ function CanvasInner() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        onConnectStart={onConnectStart}
+        onConnectEnd={onConnectEnd}
         isValidConnection={isValidConnection}
         nodeTypes={nodeTypes as any}
         snapToGrid={snapToGrid}
@@ -577,10 +597,7 @@ function CanvasInner() {
         proOptions={{ hideAttribution: true }}
       >
         <Background color="#1f1f23" gap={28} size={1} />
-        <Controls className="!bg-zinc-950 !border !border-zinc-900 !shadow-2xl !rounded-xl overflow-hidden">
-          <ControlButton onClick={() => fitView({ duration: 800 })} title="Zoom to Fit">
-            <Expand size={12} className="text-zinc-400 hover:text-white" />
-          </ControlButton>
+        <Controls className="!bg-zinc-950 !border !border-zinc-900 !shadow-2xl !rounded-xl overflow-hidden" showInteractive={false}>
           <ControlButton 
             onClick={() => {
               setBoxSelectionMode(prev => !prev);
@@ -594,6 +611,18 @@ function CanvasInner() {
             ) : (
               <Hand size={12} className="text-zinc-400 hover:text-white" />
             )}
+          </ControlButton>
+          <ControlButton
+            onClick={() => useSidebarStore.setState({ isRulesOpen: true })}
+            title="Narrative Steering Rules Editor (R)"
+          >
+            <BookOpen size={12} className="text-purple-400 hover:text-purple-300" />
+          </ControlButton>
+          <ControlButton
+            onClick={() => setShowShortcuts(true)}
+            title="Help & Compatibility Guide (?)"
+          >
+            <HelpCircle size={12} className="text-zinc-400 hover:text-white" />
           </ControlButton>
         </Controls>
       </ReactFlow>
@@ -881,6 +910,28 @@ function CanvasInner() {
         </div>
       </div>
 
+      {/* Real-time Connection Helper Banner */}
+      {connectingHandle && (
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-50 bg-zinc-950/95 border border-emerald-900/60 rounded-full px-6 py-2.5 shadow-2xl backdrop-blur-md flex items-center gap-3 animate-in fade-in slide-in-from-top-4 duration-300">
+          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <span className="text-xs font-medium text-zinc-300">
+            Connecting <strong className="text-white capitalize">{connectingHandle.nodeType}</strong>'s{' '}
+            <strong className="text-white uppercase">{connectingHandle.handleType === 'source' ? 'Output (Bottom)' : 'Input (Top)'}</strong>
+          </span>
+          <span className="text-zinc-500 text-xs">|</span>
+          <span className="text-xs text-zinc-400 font-light">
+            Drag to a compatible <strong className="text-emerald-400">{connectingHandle.handleType === 'source' ? 'Input (Top)' : 'Output (Bottom)'}</strong> of:{' '}
+            <span className="font-semibold text-zinc-200">
+              {connectingHandle.handleType === 'source'
+                ? COMPATIBILITY_RULES[connectingHandle.nodeType]?.join(', ')
+                : Object.keys(COMPATIBILITY_RULES)
+                    .filter(srcType => COMPATIBILITY_RULES[srcType].includes(connectingHandle.nodeType))
+                    .join(', ')}
+            </span>
+          </span>
+        </div>
+      )}
+
       {/* Floating Tactical Canvas Toasts */}
       <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none">
         {toasts.map(toast => (
@@ -902,32 +953,12 @@ function CanvasInner() {
         ))}
       </div>
 
-      {/* Narrative Rules Corner Trigger Button */}
-      <div className="absolute bottom-14 left-4 z-40">
-        <button
-          onClick={() => useSidebarStore.getState().toggleRules()}
-          className="flex items-center justify-center h-8 w-8 bg-zinc-950/95 hover:bg-zinc-900 border border-zinc-900 rounded-full shadow-2xl text-zinc-400 hover:text-purple-400 transition-all cursor-pointer group animate-pulse"
-          title="Narrative Steering Rules Editor (R)"
-        >
-          <BookOpen size={14} className="group-hover:scale-110 transition-transform text-purple-400" />
-        </button>
-      </div>
+      {/* Absolute triggers removed to prevent overlap with standard Zoom/Fit controls */}
 
-      {/* Keyboard Shortcuts Corner Trigger Button */}
-      <div className="absolute bottom-4 left-4 z-40">
-        <button
-          onClick={() => setShowShortcuts(true)}
-          className="flex items-center justify-center h-8 w-8 bg-zinc-950/95 hover:bg-zinc-900 border border-zinc-900 rounded-full shadow-2xl text-zinc-400 hover:text-purple-400 transition-all cursor-pointer group"
-          title="Keyboard Shortcuts Guide (?)"
-        >
-          <HelpCircle size={15} className="group-hover:rotate-12 transition-transform" />
-        </button>
-      </div>
-
-      {/* Keyboard Shortcuts Centered Modal Overlay */}
+      {/* Help & Compatibility Guide Centered Modal Overlay */}
       {showShortcuts && (
         <div className="absolute inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-lg bg-zinc-950 border border-zinc-900 rounded-2xl p-6 shadow-2xl relative space-y-5 max-h-[85vh] overflow-y-auto">
+          <div className="w-full max-w-xl bg-zinc-950 border border-zinc-900 rounded-2xl p-6 shadow-2xl relative space-y-5 max-h-[85vh] overflow-y-auto">
             <button
               onClick={() => setShowShortcuts(false)}
               className="absolute top-4 right-4 p-1.5 hover:bg-zinc-900 text-zinc-500 hover:text-zinc-300 rounded-lg transition-colors cursor-pointer"
@@ -936,108 +967,191 @@ function CanvasInner() {
               <X size={16} />
             </button>
 
-            <div className="flex items-center gap-2 border-b border-zinc-900 pb-3.5">
+            <div className="flex items-center gap-2.5 border-b border-zinc-900 pb-3">
               <div className="p-2 bg-purple-950/40 text-purple-400 border border-purple-900/30 rounded-xl">
                 <Keyboard size={20} />
               </div>
-              <div>
-                <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Keyboard Shortcuts Guide</h2>
-                <p className="text-[10px] text-zinc-500">Boost your writing speed and narrative planning</p>
+              <div className="flex-1">
+                <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Workspace Guide & Info</h2>
+                <p className="text-[10px] text-zinc-500">Shortcuts and block connection guidelines</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-5 text-xs text-zinc-300">
-              <div className="space-y-3">
-                <h3 className="text-[9px] uppercase font-bold tracking-[0.15em] text-zinc-500">Core Actions</h3>
-                
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Delete Node/Connection</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Del / Backspace</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Delink Connections</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Shift + D</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Deselect All</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Esc</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Center / Frame All (Home)</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">H</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Focus Selected (Frame)</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">F</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Auto-Layout Canvas</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">L</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Toggle Properties Panel</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">I</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Toggle Narrative Rules</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">R</kbd>
-                </div>
-
-                <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
-                  <span className="text-zinc-400 text-[11px]">Toggle This Modal</span>
-                  <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">? / K</kbd>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <h3 className="text-[9px] uppercase font-bold tracking-[0.15em] text-zinc-500">Instant Spawn at Cursor</h3>
-                <div className="grid grid-cols-1 gap-1.5 text-zinc-400">
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>1. Story Bible</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">1</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>2. Character</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">2</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>3. Subplot Strand</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">3</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>4. Act</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">4</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>5. Sequence</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">5</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>6. Scene</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">6</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>7. Beat</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">7</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>8. Decision Question</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">8</kbd>
-                  </div>
-                  <div className="flex justify-between items-center text-[11px]">
-                    <span>9. Screenplay Draft</span>
-                    <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">9</kbd>
-                  </div>
-                </div>
-              </div>
+            {/* Tab Swapper */}
+            <div className="flex border-b border-zinc-900/60 pb-1 gap-4">
+              <button
+                onClick={() => setActiveHelpTab('shortcuts')}
+                className={`text-[11px] font-bold uppercase tracking-wider pb-2 border-b-2 transition cursor-pointer ${
+                  activeHelpTab === 'shortcuts'
+                    ? 'border-purple-500 text-white'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                Keyboard Shortcuts
+              </button>
+              <button
+                onClick={() => setActiveHelpTab('compatibility')}
+                className={`text-[11px] font-bold uppercase tracking-wider pb-2 border-b-2 transition cursor-pointer ${
+                  activeHelpTab === 'compatibility'
+                    ? 'border-purple-500 text-white'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                Block Connections
+              </button>
             </div>
+
+            {activeHelpTab === 'shortcuts' ? (
+              <div className="grid grid-cols-2 gap-5 text-xs text-zinc-300">
+                <div className="space-y-3">
+                  <h3 className="text-[9px] uppercase font-bold tracking-[0.15em] text-zinc-500">Core Actions</h3>
+                  
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Delete Node/Connection</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Del / Backspace</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Delink Connections</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Shift + D</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Deselect All</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">Esc</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Center / Frame All (Home)</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">H</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Focus Selected (Frame)</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">F</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Auto-Layout Canvas</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">L</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Toggle Properties Panel</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">I</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Toggle Narrative Rules</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">R</kbd>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-zinc-900/60 pb-1.5">
+                    <span className="text-zinc-400 text-[11px]">Toggle This Modal</span>
+                    <kbd className="px-1.5 py-0.5 bg-zinc-900 text-zinc-300 border border-zinc-850 rounded font-mono text-[9px] uppercase">? / K</kbd>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <h3 className="text-[9px] uppercase font-bold tracking-[0.15em] text-zinc-500">Instant Spawn at Cursor</h3>
+                  <div className="grid grid-cols-1 gap-1.5 text-zinc-400">
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>1. Story Bible</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">1</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>2. Character</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">2</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>3. Subplot Strand</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">3</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>4. Act</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">4</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>5. Sequence</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">5</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>6. Scene</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">6</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>7. Beat</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">7</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>8. Decision Question</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">8</kbd>
+                    </div>
+                    <div className="flex justify-between items-center text-[11px]">
+                      <span>9. Screenplay Draft</span>
+                      <kbd className="px-1.5 py-0.2 bg-zinc-900 text-zinc-500 font-mono text-[9px] rounded">9</kbd>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 text-xs text-zinc-300 leading-relaxed font-light">
+                <div className="bg-zinc-900/30 border border-zinc-900 p-3.5 rounded-xl space-y-1">
+                  <h4 className="font-semibold text-zinc-200">How Node Connections Flow:</h4>
+                  <p className="text-[11px] text-zinc-400">
+                    Writers' room blocks connect from **Output handles (Bottom port)** to **Input handles (Top port)**. Establishing correct connection wiring sets up upstream context propagation for Gemini AI drafts and rewrites.
+                  </p>
+                </div>
+
+                <div className="border border-zinc-900 rounded-xl overflow-hidden">
+                  <table className="w-full text-[11px] border-collapse">
+                    <thead>
+                      <tr className="bg-zinc-900 text-zinc-400 uppercase tracking-wider text-[9px] border-b border-zinc-900">
+                        <th className="px-3.5 py-2 text-left font-bold">Source Block (Output)</th>
+                        <th className="px-3.5 py-2 text-left font-bold">Compatible Target Blocks (Input)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-zinc-900/40">
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-purple-400">Story Bible</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Act, Character, Subplot Strand</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-rose-400">Character</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Scene, Beat</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-blue-400">Act</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Sequence</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-sky-400">Sequence</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Beat</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-indigo-400">Beat</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Scene</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-teal-400">Subplot Strand</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Sequence, Scene</td>
+                      </tr>
+                      <tr>
+                        <td className="px-3.5 py-2 font-semibold text-amber-400">Scene</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Screenplay Draft, Decision Query</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="bg-emerald-950/10 border border-emerald-950/50 p-3 rounded-xl flex items-center gap-2.5 text-[11px] text-emerald-400">
+                  <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse flex-shrink-0" />
+                  <span>
+                    <strong>Interactive Cue:</strong> Dragging a connection line will cause compatible input ports to pulse green, while all incompatible blocks dim.
+                  </span>
+                </div>
+              </div>
+            )}
 
             <div className="text-[10px] text-zinc-500 text-center border-t border-zinc-900 pt-3.5 flex justify-between items-center">
               <span>Interactive Storyboard Workspace</span>
@@ -1045,7 +1159,7 @@ function CanvasInner() {
                 onClick={() => setShowShortcuts(false)}
                 className="px-4 py-1.5 bg-zinc-900 hover:bg-zinc-850 text-zinc-200 hover:text-white font-bold rounded-lg transition-colors cursor-pointer text-xs"
               >
-                Let's Write
+                Back to Writing
               </button>
             </div>
           </div>

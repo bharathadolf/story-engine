@@ -6,7 +6,6 @@ import useProjectStore from '../store/projectStore.js';
 import { useLibraryStore } from '../store/libraryStore.js';
 import DepartmentChecklist from './DepartmentChecklist.js';
 import DraftViewer from './DraftViewer.js';
-import SkillEditor from './SkillEditor.js';
 
 export default function Sidebar() {
   const { selectedNodeId, selectedNodeType, closeInspector } = useSidebarStore();

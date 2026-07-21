@@ -85,7 +85,7 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
 
           {/* Narrative Rules Dialog Popover */}
           {isRulesOpen && (
-            <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+            <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
               <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-900 rounded-2xl p-6 shadow-2xl relative flex flex-col max-h-[85vh] overflow-hidden">
                 <button
                   onClick={() => useSidebarStore.setState({ isRulesOpen: false })}
@@ -105,7 +105,7 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
                   </div>
                 </div>
 
-                <div className="flex-1 overflow-y-auto min-h-0 pr-1">
+                <div className="flex-1 flex flex-col min-h-0 pr-1">
                   <SkillEditor projectId={projectId} />
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
 
         {/* Narrative Rules Dialog Popover */}
         {isRulesOpen && (
-          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
             <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-900 rounded-2xl p-6 shadow-2xl relative flex flex-col max-h-[85vh] overflow-hidden">
               <button
                 onClick={() => useSidebarStore.setState({ isRulesOpen: false })}
@@ -253,36 +253,7 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto min-h-0 pr-1">
-                <SkillEditor projectId={projectId} />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Narrative Rules Dialog Popover */}
-        {isRulesOpen && (
-          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-            <div className="w-full max-w-2xl bg-zinc-950 border border-zinc-900 rounded-2xl p-6 shadow-2xl relative flex flex-col max-h-[85vh] overflow-hidden">
-              <button
-                onClick={() => useSidebarStore.setState({ isRulesOpen: false })}
-                className="absolute top-4 right-4 p-1.5 hover:bg-zinc-900 text-zinc-500 hover:text-zinc-300 rounded-lg transition-colors cursor-pointer z-50"
-                title="Close Rules"
-              >
-                <X size={16} />
-              </button>
-              
-              <div className="flex items-center gap-2.5 border-b border-zinc-900 pb-3.5 mb-4 shrink-0">
-                <div className="p-2 bg-purple-950/40 text-purple-400 border border-purple-900/30 rounded-xl">
-                  <BookOpen size={20} />
-                </div>
-                <div>
-                  <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Narrative Steering Rules</h2>
-                  <p className="text-[10px] text-zinc-500">Configure AI generation constraints and structural guidelines</p>
-                </div>
-              </div>
-
-              <div className="flex-1 overflow-y-auto min-h-0 pr-1">
+              <div className="flex-1 flex flex-col min-h-0 pr-1">
                 <SkillEditor projectId={projectId} />
               </div>
             </div>
