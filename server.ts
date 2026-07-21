@@ -10,7 +10,7 @@ import generateRouter from './src/server/routes/generate.js';
 import departmentRouter from './src/server/routes/department.js';
 import skillsRouter from './src/server/routes/skills.js';
 import exportRouter from './src/server/routes/export.js';
-import testNodeRouter from './src/server/routes/testNode.js';
+import testNodeRouter from './tests/testNode.js';
 
 import { resolveProject } from './src/server/middleware/resolveProject.js';
 import { initStorage } from './src/server/services/projectService.js';

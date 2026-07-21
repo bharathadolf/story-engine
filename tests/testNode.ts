@@ -1,7 +1,7 @@
 import express from 'express';
-import { ProjectRequest } from '../middleware/resolveProject.js';
-import { assembleContext } from '../services/contextAssembler.js';
-import { generateCall, brainstormCall, questionCall, departmentCall } from '../services/geminiService.js';
+import { ProjectRequest } from '../src/server/middleware/resolveProject.js';
+import { assembleContext } from '../src/server/services/contextAssembler.js';
+import { generateCall, brainstormCall, questionCall, departmentCall } from '../src/server/services/geminiService.js';
 
 const router = express.Router({ mergeParams: true });
 
