@@ -102,6 +102,53 @@ export const defaultData: Record<string, any> = {
     departmentAnnotations: {}, // e.g. { dialogue: "Annotations feedback" }
     locked: false,
     exportReady: false
+  },
+  religion: {
+    name: 'New Religion',
+    sacredText: '',
+    mythology: '',
+    hierarchy: '',
+    rituals: '',
+    holySymbols: '',
+    laws: '',
+    status: 'draft'
+  },
+  magic: {
+    name: 'New Magic Rule',
+    rules: 'Describe magic rule constraints...',
+    consequences: '',
+    limitations: '',
+    status: 'draft'
+  },
+  location: {
+    name: 'New Location',
+    description: '',
+    geography: '',
+    history: '',
+    status: 'draft'
+  },
+  artifact: {
+    name: 'New Artifact',
+    origins: '',
+    powers: '',
+    dangerLevel: 'low', 
+    status: 'draft'
+  },
+  timeline: {
+    name: 'Timeline Event',
+    year: '',
+    eventSummary: '',
+    historicalImpact: '',
+    status: 'draft'
+  },
+  organization: {
+    name: 'New Faction / Org',
+    type: 'kingdom', 
+    leaders: '',
+    agenda: '',
+    allies: '',
+    enemies: '',
+    status: 'draft'
   }
 };
 
@@ -121,5 +168,11 @@ export const nodeTypesList = [
   { type: 'scene', label: 'Scene', color: 'bg-amber-500', textColor: 'text-amber-500', desc: 'The fundamental building block of a script' },
   { type: 'beat', label: 'Beat', color: 'bg-indigo-500', textColor: 'text-indigo-500', desc: 'Individual narrative beats within a scene' },
   { type: 'question', label: 'Question / Decision', color: 'bg-pink-500', textColor: 'text-pink-500', desc: 'Decision node to resolve plot paths' },
-  { type: 'draft', label: 'Screenplay Draft', color: 'bg-slate-600', textColor: 'text-slate-600', desc: 'Screenplay text and revision drafts' }
+  { type: 'draft', label: 'Screenplay Draft', color: 'bg-slate-600', textColor: 'text-slate-600', desc: 'Screenplay text and revision drafts' },
+  { type: 'religion', label: 'Religion', color: 'bg-red-600', textColor: 'text-red-500', desc: 'Worldbuilding belief systems & myths' },
+  { type: 'magic', label: 'Magic Rule', color: 'bg-fuchsia-500', textColor: 'text-fuchsia-500', desc: 'Supernatural rules and boundaries' },
+  { type: 'location', label: 'Location', color: 'bg-emerald-500', textColor: 'text-emerald-500', desc: 'Places, geography, and historical settings' },
+  { type: 'artifact', label: 'Artifact / Tech', color: 'bg-amber-500', textColor: 'text-amber-500', desc: 'Key objects, mecha, and relics' },
+  { type: 'timeline', label: 'Timeline Event', color: 'bg-orange-500', textColor: 'text-orange-500', desc: 'Historical timeline milestone events' },
+  { type: 'organization', label: 'Faction / Org', color: 'bg-sky-500', textColor: 'text-sky-500', desc: 'Kingdoms, guilds, factions, or governments' }
 ];

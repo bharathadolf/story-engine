@@ -97,6 +97,89 @@ const DEFAULT_TEMPLATES: NodeTemplate[] = [
       reaction: 'The protagonist reacts on instinct, revealing their primary behavioral flaw.',
       shift: 'From passive safety to active panic; stakes are doubled.'
     }
+  },
+  {
+    id: 'tpl-worldbuilding-religion',
+    name: 'Crimson Covenant (Religion)',
+    type: 'religion',
+    description: 'Pre-configured religion template detailing hierarchy, forbidden acts, and rituals.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'The Crimson Covenant',
+      sacredText: 'The Book of Blood',
+      mythology: 'Born from the first battlefield, where blood met steel.',
+      hierarchy: 'High Blood Keeper -> Blood Priests -> Temple Guardians',
+      rituals: 'Moon ceremonies, blood offerings',
+      holySymbols: 'Red spiral, Broken crown',
+      laws: 'Burning blood, Killing priests'
+    }
+  },
+  {
+    id: 'tpl-worldbuilding-magic',
+    name: 'Blood Remembrance (Magic)',
+    type: 'magic',
+    description: 'Pre-configured magic system detailing mechanics, limits, and rules.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'Blood Magic System',
+      rules: 'Blood remembers and cannot lie; blood can temporarily possess dead vessels.',
+      consequences: 'Drains physical stamina of the caster.',
+      limitations: 'Cannot create new organic life; fire permanently neutralizes active blood mecha.'
+    }
+  },
+  {
+    id: 'tpl-worldbuilding-location',
+    name: 'Lost Battlefield (Location)',
+    type: 'location',
+    description: 'Pre-configured location detailing environment, lore, and geography.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'Lost Battlefield of Mayong',
+      description: 'A misty valley overgrown with ancient vines, hidden behind dense hills.',
+      geography: 'Central hollow valley with ruins of iron columns and stone arches.',
+      history: 'Where an entire medieval army vanished overnight in 1337.'
+    }
+  },
+  {
+    id: 'tpl-worldbuilding-artifact',
+    name: 'Steam Excavator (Artifact)',
+    type: 'artifact',
+    description: 'Pre-configured tech/artifact detailing origins and powers.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'Steam Mecha Excavator',
+      origins: 'Constructed by the British Railway Expedition in 1778.',
+      powers: 'Steam-powered drills capable of cutting through ancient crypt stones.',
+      dangerLevel: 'medium'
+    }
+  },
+  {
+    id: 'tpl-worldbuilding-timeline',
+    name: 'The Disappearance (Timeline)',
+    type: 'timeline',
+    description: 'Pre-configured timeline event detailing historical epoch.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'Mystic army vanishes',
+      year: '1337 AD',
+      eventSummary: 'Kings division gets surrounded in Mayong and mysteriously disappears without trace.',
+      historicalImpact: 'Mayong becomes forbidden territory; legend of the sleeping warriors begins.'
+    }
+  },
+  {
+    id: 'tpl-worldbuilding-organization',
+    name: 'British Railway (Organization)',
+    type: 'organization',
+    description: 'Pre-configured faction/organization detailing agenda and hierarchy.',
+    createdAt: new Date().toISOString(),
+    data: {
+      name: 'British Railway Engineers',
+      type: 'empire',
+      leaders: 'Colonel Sterling, Chief Engineer Adams',
+      agenda: 'Lay tracks through Mayong pass to secure resource supply lines.',
+      allies: 'British Garrison',
+      enemies: 'Crimson Priests, Local Tribes'
+    }
   }
 ];
 

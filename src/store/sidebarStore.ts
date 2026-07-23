@@ -7,13 +7,17 @@ export interface ConnectingHandleState {
 }
 
 export const COMPATIBILITY_RULES: Record<string, string[]> = {
-  bible: ['act', 'character', 'strand'],
-  character: ['scene', 'beat'],
+  bible: ['act', 'character', 'strand', 'religion', 'magic', 'location', 'artifact', 'timeline', 'organization'],
+  character: ['scene', 'beat', 'organization', 'religion'],
   act: ['sequence'],
-  sequence: ['beat'],
+  sequence: ['beat', 'draft'],
   beat: ['scene'],
-  scene: ['draft', 'question'],
+  scene: ['draft', 'question', 'location', 'artifact', 'magic'],
   strand: ['sequence', 'scene'],
+  organization: ['religion', 'location', 'character'],
+  religion: ['location', 'artifact'],
+  magic: ['artifact', 'location'],
+  timeline: ['scene', 'character', 'bible'],
   draft: [],
   question: []
 };

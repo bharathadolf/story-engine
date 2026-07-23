@@ -1052,6 +1052,320 @@ export default function Sidebar() {
               </div>
             )}
 
+            {/* RELIGION NODE FORM */}
+            {selectedNodeType === 'religion' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Religion Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Sacred Text / Holy Book</label>
+                  <input
+                    type="text"
+                    value={localData.sacredText || ''}
+                    onChange={(e) => handleUpdateField('sacredText', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                    placeholder="e.g. The Book of Blood"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Creation Myth & Origins</label>
+                  <textarea
+                    value={localData.mythology || ''}
+                    onChange={(e) => handleUpdateField('mythology', e.target.value)}
+                    rows={3}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Religious Hierarchy</label>
+                  <input
+                    type="text"
+                    value={localData.hierarchy || ''}
+                    onChange={(e) => handleUpdateField('hierarchy', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                    placeholder="e.g. High Priest -> Guardians"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Sacred Rituals & Ceremonies</label>
+                  <textarea
+                    value={localData.rituals || ''}
+                    onChange={(e) => handleUpdateField('rituals', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Holy Symbols</label>
+                  <input
+                    type="text"
+                    value={localData.holySymbols || ''}
+                    onChange={(e) => handleUpdateField('holySymbols', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Forbidden Acts & Sacred Laws</label>
+                  <textarea
+                    value={localData.laws || ''}
+                    onChange={(e) => handleUpdateField('laws', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                    placeholder="e.g. Breaking ancient seals..."
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* MAGIC NODE FORM */}
+            {selectedNodeType === 'magic' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Magic System / Rule Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Rules of Engagement / Mechanics</label>
+                  <textarea
+                    value={localData.rules || ''}
+                    onChange={(e) => handleUpdateField('rules', e.target.value)}
+                    rows={3}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Consequences / Toll on Users</label>
+                  <textarea
+                    value={localData.consequences || ''}
+                    onChange={(e) => handleUpdateField('consequences', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                    placeholder="e.g. Life energy drain"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Limitations & Weaknesses</label>
+                  <textarea
+                    value={localData.limitations || ''}
+                    onChange={(e) => handleUpdateField('limitations', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                    placeholder="e.g. Cold iron, running water"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* LOCATION NODE FORM */}
+            {selectedNodeType === 'location' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Location Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Visual Description & Ambience</label>
+                  <textarea
+                    value={localData.description || ''}
+                    onChange={(e) => handleUpdateField('description', e.target.value)}
+                    rows={3}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Geography & Layout</label>
+                  <textarea
+                    value={localData.geography || ''}
+                    onChange={(e) => handleUpdateField('geography', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Historical Lore</label>
+                  <textarea
+                    value={localData.history || ''}
+                    onChange={(e) => handleUpdateField('history', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* ARTIFACT NODE FORM */}
+            {selectedNodeType === 'artifact' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Artifact Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Historical Origins</label>
+                  <textarea
+                    value={localData.origins || ''}
+                    onChange={(e) => handleUpdateField('origins', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Mystical Powers & Tech Specs</label>
+                  <textarea
+                    value={localData.powers || ''}
+                    onChange={(e) => handleUpdateField('powers', e.target.value)}
+                    rows={3}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Danger / Classification Level</label>
+                  <select
+                    value={localData.dangerLevel || 'low'}
+                    onChange={(e) => handleUpdateField('dangerLevel', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors cursor-pointer font-sans"
+                  >
+                    <option value="low">Low (Safe/Utility)</option>
+                    <option value="medium">Medium (Requires training)</option>
+                    <option value="high">High (Dangerous/Unstable)</option>
+                    <option value="lethal">Lethal (Godlike relic/Weapon)</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {/* TIMELINE NODE FORM */}
+            {selectedNodeType === 'timeline' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Event Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Historical Era / Year</label>
+                  <input
+                    type="text"
+                    value={localData.year || ''}
+                    onChange={(e) => handleUpdateField('year', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                    placeholder="e.g. 1337 AD, 5000 BC"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Summary of Event</label>
+                  <textarea
+                    value={localData.eventSummary || ''}
+                    onChange={(e) => handleUpdateField('eventSummary', e.target.value)}
+                    rows={3}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Historical Impact on Current World</label>
+                  <textarea
+                    value={localData.historicalImpact || ''}
+                    onChange={(e) => handleUpdateField('historicalImpact', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* ORGANIZATION NODE FORM */}
+            {selectedNodeType === 'organization' && (
+              <div className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Faction / Organization Name</label>
+                  <input
+                    type="text"
+                    value={localData.name || ''}
+                    onChange={(e) => handleUpdateField('name', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Organization Category</label>
+                  <select
+                    value={localData.type || 'faction'}
+                    onChange={(e) => handleUpdateField('type', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors cursor-pointer font-sans"
+                  >
+                    <option value="kingdom">Kingdom / Monarch</option>
+                    <option value="empire">Empire / Realm</option>
+                    <option value="republic">Republic / Alliance</option>
+                    <option value="faction">Faction / Syndicate</option>
+                    <option value="military">Military Command</option>
+                    <option value="guild">Trade Guild / Corporation</option>
+                    <option value="sect">Cabal / Sect / Cult</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Key Leaders & Members</label>
+                  <input
+                    type="text"
+                    value={localData.leaders || ''}
+                    onChange={(e) => handleUpdateField('leaders', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Core Agenda & Ambition</label>
+                  <textarea
+                    value={localData.agenda || ''}
+                    onChange={(e) => handleUpdateField('agenda', e.target.value)}
+                    rows={2}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors resize-none leading-relaxed"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Declared Allies</label>
+                  <input
+                    type="text"
+                    value={localData.allies || ''}
+                    onChange={(e) => handleUpdateField('allies', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Active Enemies</label>
+                  <input
+                    type="text"
+                    value={localData.enemies || ''}
+                    onChange={(e) => handleUpdateField('enemies', e.target.value)}
+                    className="w-full px-3.5 py-2 text-xs bg-[#09090b] border border-zinc-900 hover:border-zinc-800 focus:border-zinc-700 rounded-xl focus:outline-none text-zinc-200 transition-colors"
+                  />
+                </div>
+              </div>
+            )}
+
             {/* DRAFT NODE FORM */}
             {selectedNodeType === 'draft' && (
               <div className="space-y-4 h-[calc(100vh-140px)] flex flex-col">
@@ -1083,7 +1397,7 @@ export default function Sidebar() {
             )}
 
             {/* Sandbox Developer Console (Collasible or inline at the bottom) */}
-            {activeProjectId === 'proj-sandbox' && selectedNodeType !== 'draft' && (
+            {(activeProjectId === 'proj-sandbox' || activeProjectId === 'proj-test-sandbox') && selectedNodeType !== 'draft' && (
               <div className="border-t border-zinc-900 pt-5 mt-5 space-y-4">
                 <div className="flex items-center gap-2 text-emerald-400 border-b border-zinc-900/60 pb-2 mb-2">
                   <Terminal size={14} />

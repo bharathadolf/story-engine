@@ -20,6 +20,12 @@ import SceneNode from './nodes/SceneNode.js';
 import BeatNode from './nodes/BeatNode.js';
 import QuestionNode from './nodes/QuestionNode.js';
 import DraftNode from './nodes/DraftNode.js';
+import ReligionNode from './nodes/ReligionNode.js';
+import MagicNode from './nodes/MagicNode.js';
+import LocationNode from './nodes/LocationNode.js';
+import ArtifactNode from './nodes/ArtifactNode.js';
+import TimelineNode from './nodes/TimelineNode.js';
+import OrganizationNode from './nodes/OrganizationNode.js';
 import useSidebarStore, { COMPATIBILITY_RULES } from '../store/sidebarStore.js';
 
 import { 
@@ -104,6 +110,12 @@ function CanvasInner() {
         case 'beat': return '#6366f1';
         case 'question': return '#ec4899';
         case 'draft': return '#475569';
+        case 'religion': return '#dc2626';
+        case 'magic': return '#d946ef';
+        case 'location': return '#10b981';
+        case 'artifact': return '#eab308';
+        case 'timeline': return '#f97316';
+        case 'organization': return '#06b6d4';
         default: return '#27272a';
       }
     } else {
@@ -274,7 +286,13 @@ function CanvasInner() {
       scene: wrapNode(SceneNode, 'scene'),
       beat: wrapNode(BeatNode, 'beat'),
       question: wrapNode(QuestionNode, 'question'),
-      draft: wrapNode(DraftNode, 'draft')
+      draft: wrapNode(DraftNode, 'draft'),
+      religion: wrapNode(ReligionNode, 'religion'),
+      magic: wrapNode(MagicNode, 'magic'),
+      location: wrapNode(LocationNode, 'location'),
+      artifact: wrapNode(ArtifactNode, 'artifact'),
+      timeline: wrapNode(TimelineNode, 'timeline'),
+      organization: wrapNode(OrganizationNode, 'organization')
     };
   }, []);
 
@@ -474,15 +492,15 @@ function CanvasInner() {
       if (!isNaN(num) && num >= 1 && num <= 9) {
         e.preventDefault();
         const spawnTypes = [
-          'bible',      // 1
-          'character',  // 2
-          'strand',     // 3
-          'act',        // 4
-          'sequence',   // 5
-          'scene',      // 6
-          'beat',       // 7
-          'question',   // 8
-          'draft'       // 9
+          'bible',        // 1
+          'character',    // 2
+          'strand',       // 3
+          'act',          // 4
+          'sequence',     // 5
+          'scene',        // 6
+          'beat',         // 7
+          'religion',     // 8
+          'magic'         // 9
         ];
 
         const typeToSpawn = spawnTypes[num - 1];
@@ -506,6 +524,12 @@ function CanvasInner() {
             sequence: 'Sequence',
             scene: 'Scene',
             beat: 'Beat',
+            religion: 'Religion',
+            magic: 'Magic Rule',
+            location: 'Location',
+            artifact: 'Artifact / Tech',
+            timeline: 'Timeline Event',
+            organization: 'Faction / Org',
             question: 'Decision Query',
             draft: 'Screenplay Draft'
           };
@@ -551,18 +575,6 @@ function CanvasInner() {
 
       const typeA = sourceNode.type || '';
       const typeB = targetNode.type || '';
-
-      const COMPATIBILITY_RULES: Record<string, string[]> = {
-        bible: ['act', 'character', 'strand'],
-        character: ['scene', 'beat'],
-        act: ['sequence'],
-        sequence: ['beat'],
-        beat: ['scene'],
-        scene: ['draft', 'question'],
-        strand: ['sequence', 'scene'],
-        draft: [],
-        question: []
-      };
 
       const isCompatible = 
         (COMPATIBILITY_RULES[typeA]?.includes(typeB)) || 
@@ -1126,7 +1138,7 @@ function CanvasInner() {
                       </tr>
                       <tr>
                         <td className="px-3.5 py-2 font-semibold text-sky-400">Sequence</td>
-                        <td className="px-3.5 py-2 text-zinc-300">Beat</td>
+                        <td className="px-3.5 py-2 text-zinc-300">Beat, Screenplay Draft</td>
                       </tr>
                       <tr>
                         <td className="px-3.5 py-2 font-semibold text-indigo-400">Beat</td>

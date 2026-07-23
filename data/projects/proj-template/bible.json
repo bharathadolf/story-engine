@@ -1,0 +1,14 @@
+{
+  "id": "bible-1",
+  "type": "bible",
+  "position": {
+    "x": 400,
+    "y": 50
+  },
+  "data": {
+    "title": "Procedural Screenplay Template",
+    "premise": "A blueprint mapping how storyboard nodes connect dynamically to feed parameters downstream.",
+    "theme": "Procedural logic and context-guided text generation.",
+    "status": "template-bible"
+  }
+}

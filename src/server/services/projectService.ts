@@ -109,6 +109,232 @@ export async function initStorage() {
       projects.unshift(sandboxMeta);
       await fs.writeFile(PROJECTS_JSON, JSON.stringify(projects, null, 2), 'utf-8');
     }
+
+    // Ensure template project is initialized
+    try {
+      const data = await fs.readFile(PROJECTS_JSON, 'utf-8');
+      const projects: ProjectMeta[] = JSON.parse(data);
+      if (!projects.some(p => p.id === 'proj-template')) {
+        const templateMeta: ProjectMeta = {
+          id: 'proj-template',
+          name: 'Procedural Narrative Blueprint',
+          genre: 'Procedural Guide',
+          logline: 'Complete connected template detailing Houdini-style procedural context flow and output data generation.',
+          coverColor: '#8b5cf6', // Violet
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          nodeCount: 9,
+          status: 'template'
+        };
+
+        const projectFolder = path.join(PROJECTS_DIR, 'proj-template');
+        await ensureDirectoryExists(projectFolder);
+        await ensureDirectoryExists(path.join(projectFolder, 'skills'));
+        await ensureDirectoryExists(path.join(projectFolder, 'drafts'));
+
+        const nodes = [
+          {
+            id: 'bible-1',
+            type: 'bible',
+            position: { x: 400, y: 50 },
+            data: {
+              title: 'Procedural Screenplay Template',
+              premise: 'A blueprint mapping how storyboard nodes connect dynamically to feed parameters downstream.',
+              theme: 'Procedural logic and context-guided text generation.',
+              status: 'template-bible'
+            }
+          },
+          {
+            id: 'act-1',
+            type: 'act',
+            position: { x: 100, y: 250 },
+            data: {
+              actNumber: 1,
+              dramaticJob: 'Establish template rules and configure compatibility boundaries.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'char-1',
+            type: 'character',
+            position: { x: 400, y: 250 },
+            data: {
+              name: 'Hero Writer',
+              role: 'protagonist',
+              want: 'To construct narratives as a clean dependency tree.',
+              need: 'To learn how nodes influence downstream screenplay parameters.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'strand-1',
+            type: 'strand',
+            position: { x: 700, y: 250 },
+            data: {
+              name: 'Parallel Subplot: Graph Optimization',
+              premiseSentence: 'A secondary storyline focusing on performance and layout alignment.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'seq-1',
+            type: 'sequence',
+            position: { x: 100, y: 500 },
+            data: {
+              name: 'Sequence I: Designing the Flow',
+              dramaticJob: 'Build a solid foundation of connected story elements.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'beat-1',
+            type: 'beat',
+            position: { x: 400, y: 650 },
+            data: {
+              order: 1,
+              action: 'Writer drags a line from Sequence to Draft Node.',
+              reaction: 'The port turns green, demonstrating compatible data flow.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'scene-1',
+            type: 'scene',
+            position: { x: 400, y: 850 },
+            data: {
+              slugline: 'INT. WRITER\'S LAB - NIGHT',
+              turn: 'The compilation succeeds. The writer sees the generated screenplay appear.',
+              status: 'draft'
+            }
+          },
+          {
+            id: 'question-1',
+            type: 'question',
+            position: { x: 200, y: 1100 },
+            data: {
+              promptText: 'Should the draft be generated dynamically?',
+              options: ['Yes, run AI draft generation', 'No, use pre-written template text'],
+              answer: 'Yes, run AI draft generation',
+              affectsField: 'draft'
+            }
+          },
+          {
+            id: 'draft-1',
+            type: 'draft',
+            position: { x: 600, y: 1100 },
+            data: {
+              currentVersion: 1,
+              versions: [
+                {
+                  versionNumber: 1,
+                  text: 'FADE IN:\n\nINT. WRITER\'S LAB - NIGHT\n\nHero Writer taps the compile button. Around him, the storyboard node graph lights up in perfect emerald-green synchrony.\n\nHERO WRITER\nIt works. The connection logic propagates variables downstream, exactly like Houdini.'
+                }
+              ],
+              locked: false
+            }
+          }
+        ];
+
+        const edges = [
+          { id: 'e-bible-act', source: 'bible-1', target: 'act-1' },
+          { id: 'e-bible-char', source: 'bible-1', target: 'char-1' },
+          { id: 'e-bible-strand', source: 'bible-1', target: 'strand-1' },
+          { id: 'e-act-seq', source: 'act-1', target: 'seq-1' },
+          { id: 'e-strand-seq', source: 'strand-1', target: 'seq-1' },
+          { id: 'e-char-beat', source: 'char-1', target: 'beat-1' },
+          { id: 'e-seq-beat', source: 'seq-1', target: 'beat-1' },
+          { id: 'e-beat-scene', source: 'beat-1', target: 'scene-1' },
+          { id: 'e-strand-scene', source: 'strand-1', target: 'scene-1' },
+          { id: 'e-char-scene', source: 'char-1', target: 'scene-1' },
+          { id: 'e-seq-draft', source: 'seq-1', target: 'draft-1' },
+          { id: 'e-scene-draft', source: 'scene-1', target: 'draft-1' },
+          { id: 'e-scene-question', source: 'scene-1', target: 'question-1' }
+        ];
+
+        const graph = { nodes, edges };
+        await fs.writeFile(path.join(projectFolder, 'graph.json'), JSON.stringify(graph, null, 2), 'utf-8');
+        await fs.writeFile(path.join(projectFolder, 'bible.json'), JSON.stringify(nodes[0], null, 2), 'utf-8');
+
+        projects.push(templateMeta);
+        await fs.writeFile(PROJECTS_JSON, JSON.stringify(projects, null, 2), 'utf-8');
+      }
+    } catch (err) {
+      console.error('Failed to initialize template project:', err);
+    }
+
+    // Ensure test-sandbox project is initialized
+    try {
+      const data = await fs.readFile(PROJECTS_JSON, 'utf-8');
+      const projects: ProjectMeta[] = JSON.parse(data);
+      if (!projects.some(p => p.id === 'proj-test-sandbox')) {
+        const testSandboxMeta: ProjectMeta = {
+          id: 'proj-test-sandbox',
+          name: 'Developer Testing Canvas',
+          genre: 'Node Interface Development',
+          logline: 'Dedicated test canvas to build, preview, and review node interfaces and properties separately.',
+          coverColor: '#ef4444', 
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          nodeCount: 2,
+          status: 'test-sandbox'
+        };
+
+        const projectFolder = path.join(PROJECTS_DIR, 'proj-test-sandbox');
+        await ensureDirectoryExists(projectFolder);
+        await ensureDirectoryExists(path.join(projectFolder, 'skills'));
+        await ensureDirectoryExists(path.join(projectFolder, 'drafts'));
+
+        const bibleNode = {
+          id: 'bible-test-001',
+          type: 'bible',
+          position: { x: 250, y: 150 },
+          data: {
+            title: 'Test Scenario: Alpha Build',
+            premise: 'Testing new character arcs and sequence nodes in isolation.',
+            theme: 'Trial and error',
+            toneContract: {
+              pacing: 'Rapid prototyping',
+              darkness: 'Muted grey values',
+              adventure: 'Developer QA testing canvas'
+            },
+            worldRules: {
+              setting: 'Port 3002 Node Testbed Server'
+            },
+            twistMechanics: 'Simulated prompt generation overrides',
+            status: 'draft'
+          }
+        };
+
+        const charNode = {
+          id: 'char-test-001',
+          type: 'character',
+          position: { x: 600, y: 150 },
+          data: {
+            name: 'Test Character QA',
+            role: 'Protagonist',
+            want: 'To trigger test outputs cleanly.',
+            need: 'To pass node validations.',
+            wound: 'Corrupted JSON schema fields.',
+            flaw: 'Bypasses standard verification flow.'
+          }
+        };
+
+        const graph = {
+          nodes: [bibleNode, charNode],
+          edges: [
+            { id: 'edge-test-1', source: 'bible-test-001', target: 'char-test-001', label: 'defines' }
+          ]
+        };
+
+        await fs.writeFile(path.join(projectFolder, 'graph.json'), JSON.stringify(graph, null, 2), 'utf-8');
+        await fs.writeFile(path.join(projectFolder, 'bible.json'), JSON.stringify(bibleNode, null, 2), 'utf-8');
+
+        projects.push(testSandboxMeta);
+        await fs.writeFile(PROJECTS_JSON, JSON.stringify(projects, null, 2), 'utf-8');
+      }
+    } catch (err) {
+      console.error('Failed to initialize developer testing canvas:', err);
+    }
   } catch (err) {
     console.error('Failed to initialize sandbox project:', err);
   }

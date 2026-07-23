@@ -1,0 +1,248 @@
+{
+  "nodes": [
+    {
+      "id": "bible-1",
+      "type": "bible",
+      "position": {
+        "x": 376.0562483666963,
+        "y": -237.32130350702977
+      },
+      "data": {
+        "title": "Procedural Screenplay Template",
+        "premise": "A blueprint mapping how storyboard nodes connect dynamically to feed parameters downstream.",
+        "theme": "Procedural logic and context-guided text generation.",
+        "status": "template-bible"
+      },
+      "measured": {
+        "width": 260,
+        "height": 183
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "act-1",
+      "type": "act",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "data": {
+        "actNumber": 1,
+        "dramaticJob": "Establish template rules and configure compatibility boundaries.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 245,
+        "height": 113
+      },
+      "selected": false
+    },
+    {
+      "id": "char-1",
+      "type": "character",
+      "position": {
+        "x": 400,
+        "y": 250
+      },
+      "data": {
+        "name": "Hero Writer",
+        "role": "protagonist",
+        "want": "To construct narratives as a clean dependency tree.",
+        "need": "To learn how nodes influence downstream screenplay parameters.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 119
+      },
+      "selected": false
+    },
+    {
+      "id": "strand-1",
+      "type": "strand",
+      "position": {
+        "x": 700,
+        "y": 250
+      },
+      "data": {
+        "name": "Parallel Subplot: Graph Optimization",
+        "premiseSentence": "A secondary storyline focusing on performance and layout alignment.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 137
+      },
+      "selected": false
+    },
+    {
+      "id": "seq-1",
+      "type": "sequence",
+      "position": {
+        "x": 100,
+        "y": 500
+      },
+      "data": {
+        "name": "Sequence I: Designing the Flow",
+        "dramaticJob": "Build a solid foundation of connected story elements.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 135
+      }
+    },
+    {
+      "id": "beat-1",
+      "type": "beat",
+      "position": {
+        "x": 400,
+        "y": 650
+      },
+      "data": {
+        "order": 1,
+        "action": "Writer drags a line from Sequence to Draft Node.",
+        "reaction": "The port turns green, demonstrating compatible data flow.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 134
+      },
+      "selected": false
+    },
+    {
+      "id": "scene-1",
+      "type": "scene",
+      "position": {
+        "x": 400,
+        "y": 850
+      },
+      "data": {
+        "slugline": "INT. WRITER'S LAB - NIGHT",
+        "turn": "The compilation succeeds. The writer sees the generated screenplay appear.",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 250,
+        "height": 195
+      },
+      "selected": false
+    },
+    {
+      "id": "question-1",
+      "type": "question",
+      "position": {
+        "x": 125.03030901009964,
+        "y": 1467.5933235633825
+      },
+      "data": {
+        "promptText": "Should the draft be generated dynamically?",
+        "options": [
+          "Yes, run AI draft generation",
+          "No, use pre-written template text"
+        ],
+        "answer": "Yes, run AI draft generation",
+        "affectsField": "draft"
+      },
+      "measured": {
+        "width": 250,
+        "height": 197
+      },
+      "selected": true,
+      "dragging": false
+    },
+    {
+      "id": "draft-1",
+      "type": "draft",
+      "position": {
+        "x": 667.6419952625819,
+        "y": 1336.7469834190365
+      },
+      "data": {
+        "currentVersion": 1,
+        "versions": [
+          {
+            "versionNumber": 1,
+            "text": "FADE IN:\n\nINT. WRITER'S LAB - NIGHT\n\nHero Writer taps the compile button. Around him, the storyboard node graph lights up in perfect emerald-green synchrony.\n\nHERO WRITER\nIt works. The connection logic propagates variables downstream, exactly like Houdini."
+          }
+        ],
+        "locked": false
+      },
+      "measured": {
+        "width": 250,
+        "height": 172
+      },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-bible-act",
+      "source": "bible-1",
+      "target": "act-1"
+    },
+    {
+      "id": "e-bible-char",
+      "source": "bible-1",
+      "target": "char-1"
+    },
+    {
+      "id": "e-bible-strand",
+      "source": "bible-1",
+      "target": "strand-1"
+    },
+    {
+      "id": "e-act-seq",
+      "source": "act-1",
+      "target": "seq-1"
+    },
+    {
+      "id": "e-strand-seq",
+      "source": "strand-1",
+      "target": "seq-1"
+    },
+    {
+      "id": "e-char-beat",
+      "source": "char-1",
+      "target": "beat-1"
+    },
+    {
+      "id": "e-seq-beat",
+      "source": "seq-1",
+      "target": "beat-1"
+    },
+    {
+      "id": "e-beat-scene",
+      "source": "beat-1",
+      "target": "scene-1"
+    },
+    {
+      "id": "e-strand-scene",
+      "source": "strand-1",
+      "target": "scene-1"
+    },
+    {
+      "id": "e-char-scene",
+      "source": "char-1",
+      "target": "scene-1"
+    },
+    {
+      "id": "e-seq-draft",
+      "source": "seq-1",
+      "target": "draft-1"
+    },
+    {
+      "id": "e-scene-draft",
+      "source": "scene-1",
+      "target": "draft-1"
+    },
+    {
+      "id": "e-scene-question",
+      "source": "scene-1",
+      "target": "question-1"
+    }
+  ]
+}

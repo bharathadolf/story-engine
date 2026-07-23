@@ -1,0 +1,339 @@
+{
+  "nodes": [
+    {
+      "id": "bible-test-001",
+      "type": "bible",
+      "position": {
+        "x": -150,
+        "y": 50
+      },
+      "data": {
+        "title": "Test Scenario: Alpha Build",
+        "premise": "Testing new character arcs and sequence nodes in isolation.",
+        "theme": "Trial and error",
+        "toneContract": {
+          "pacing": "Rapid prototyping",
+          "darkness": "Muted grey values",
+          "adventure": "Developer QA testing canvas"
+        },
+        "worldRules": {
+          "setting": "Port 3002 Node Testbed Server"
+        },
+        "twistMechanics": "Simulated prompt generation overrides",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 260,
+        "height": 171
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "char-test-001",
+      "type": "character",
+      "position": {
+        "x": -360,
+        "y": 150
+      },
+      "data": {
+        "name": "Test Character QA",
+        "role": "Protagonist",
+        "want": "To trigger test outputs cleanly.",
+        "need": "To pass node validations.",
+        "wound": "Corrupted JSON schema fields.",
+        "flaw": "Bypasses standard verification flow."
+      },
+      "measured": {
+        "width": 240,
+        "height": 143
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "bible-1784740794701-353",
+      "type": "bible",
+      "position": {
+        "x": 150,
+        "y": 50
+      },
+      "data": {
+        "title": "New Screenplay Project",
+        "premise": "",
+        "theme": "",
+        "toneContract": {
+          "pacing": "Moderate pacing",
+          "darkness": "Balanced light & darkness",
+          "adventure": "Dramatic hero journey style"
+        },
+        "worldRules": {
+          "setting": "Contemporary real world"
+        },
+        "twistMechanics": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 233,
+        "height": 119
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "character-1784740795584-154",
+      "type": "character",
+      "position": {
+        "x": -360,
+        "y": 330
+      },
+      "data": {
+        "name": "New Character",
+        "role": "protagonist",
+        "strand": "",
+        "want": "",
+        "need": "",
+        "wound": "",
+        "flaw": "",
+        "arcSummary": "",
+        "appearsInScenes": [],
+        "status": "draft"
+      },
+      "measured": {
+        "width": 240,
+        "height": 95
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "strand-1784740796462-301",
+      "type": "strand",
+      "position": {
+        "x": 360,
+        "y": 150
+      },
+      "data": {
+        "name": "Main Storyline",
+        "genre": "",
+        "timePeriod": "",
+        "protagonistRef": "",
+        "premiseSentence": "",
+        "convergenceRole": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 205,
+        "height": 95
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "act-1784740797359-317",
+      "type": "act",
+      "position": {
+        "x": 0,
+        "y": 250
+      },
+      "data": {
+        "strandRef": null,
+        "actNumber": 1,
+        "dramaticJob": "Set up the world and trigger the main conflict",
+        "openingState": "",
+        "closingState": "",
+        "turn": "",
+        "protagonistPosition": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 245,
+        "height": 113
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "sequence-1784740798454-924",
+      "type": "sequence",
+      "position": {
+        "x": 0,
+        "y": 480
+      },
+      "data": {
+        "actRef": "",
+        "name": "New Sequence",
+        "episodeRef": null,
+        "dramaticJob": "",
+        "miniClimax": "",
+        "runtimeMins": 10,
+        "seedPlanted": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 204,
+        "height": 95
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "scene-1784740799191-901",
+      "type": "scene",
+      "position": {
+        "x": 0,
+        "y": 710
+      },
+      "data": {
+        "sequenceRef": "",
+        "slugline": "INT. NEW LOCATION - DAY",
+        "characters": [],
+        "enteringState": "",
+        "exitingState": "",
+        "turn": "",
+        "dramaticJob": "",
+        "seedPlanted": "",
+        "runtimeMins": 3,
+        "departmentsPassed": [],
+        "draftRef": null,
+        "status": "draft"
+      },
+      "measured": {
+        "width": 210,
+        "height": 177
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "beat-1784740799870-943",
+      "type": "beat",
+      "position": {
+        "x": -150,
+        "y": 940
+      },
+      "data": {
+        "sceneRef": "",
+        "order": 1,
+        "action": "",
+        "reaction": "",
+        "shift": "",
+        "notes": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 200,
+        "height": 117
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "question-1784740800662-691",
+      "type": "question",
+      "position": {
+        "x": 150,
+        "y": 940
+      },
+      "data": {
+        "promptText": "",
+        "options": [],
+        "answer": null,
+        "answeredAt": null,
+        "locked": false,
+        "affectsNodeRef": "",
+        "affectsField": "",
+        "blocksGenerate": true
+      },
+      "measured": {
+        "width": 250,
+        "height": 136
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "draft-1784740801455-370",
+      "type": "draft",
+      "position": {
+        "x": 0,
+        "y": 1170
+      },
+      "data": {
+        "sceneRef": "",
+        "versions": [
+          {
+            "versionNumber": 1,
+            "text": "",
+            "generatedAt": "",
+            "departmentsRun": []
+          }
+        ],
+        "currentVersion": 1,
+        "departmentAnnotations": {},
+        "locked": false,
+        "exportReady": false
+      },
+      "measured": {
+        "width": 210,
+        "height": 121
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "bible-1784745176632-110",
+      "type": "bible",
+      "position": {
+        "x": 1307.142738259262,
+        "y": -348.39789168096877
+      },
+      "data": {
+        "title": "New Screenplay Project",
+        "premise": "",
+        "theme": "",
+        "toneContract": {
+          "pacing": "Moderate pacing",
+          "darkness": "Balanced light & darkness",
+          "adventure": "Dramatic hero journey style"
+        },
+        "worldRules": {
+          "setting": "Contemporary real world"
+        },
+        "twistMechanics": "",
+        "status": "draft"
+      },
+      "measured": {
+        "width": 233,
+        "height": 119
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "organization-1784745208111-25",
+      "type": "organization",
+      "position": {
+        "x": 306.76741228291985,
+        "y": 229.44462001438353
+      },
+      "data": {
+        "name": "New Faction / Org",
+        "type": "kingdom",
+        "leaders": "",
+        "agenda": "",
+        "allies": "",
+        "enemies": "",
+        "status": "draft"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-test-1",
+      "source": "bible-test-001",
+      "target": "char-test-001",
+      "label": "defines"
+    }
+  ]
+}

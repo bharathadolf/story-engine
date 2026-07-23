@@ -39,6 +39,29 @@ export async function assembleContext(
   const ancestors = getAncestors(targetNodeId, nodes, edges);
   const characterNodes = getConnectedCharacters(targetNodeId, nodes, edges);
 
+  // Gather worldbuilding nodes connected directly to targetNodeId or its ancestors
+  const worldbuilding = getConnectedWorldbuilding(targetNodeId, nodes, edges);
+  
+  // Also collect for ancestors
+  ancestors.forEach(a => {
+    const w = getConnectedWorldbuilding(a.id, nodes, edges);
+    worldbuilding.religions.push(...w.religions);
+    worldbuilding.magics.push(...w.magics);
+    worldbuilding.locations.push(...w.locations);
+    worldbuilding.artifacts.push(...w.artifacts);
+    worldbuilding.timelines.push(...w.timelines);
+    worldbuilding.organizations.push(...w.organizations);
+  });
+
+  // Deduplicate helper
+  const dedup = (arr: GraphNode[]) => Array.from(new Map(arr.map(item => [item.id, item])).values());
+  const religions = dedup(worldbuilding.religions);
+  const magics = dedup(worldbuilding.magics);
+  const locations = dedup(worldbuilding.locations);
+  const artifacts = dedup(worldbuilding.artifacts);
+  const timelines = dedup(worldbuilding.timelines);
+  const organizations = dedup(worldbuilding.organizations);
+
   const lockedQuestions = nodes.filter(n =>
     n.type === 'question' &&
     n.data.locked === true &&
@@ -49,7 +72,18 @@ export async function assembleContext(
 
   const systemPrompt = buildSystemPrompt(skills, bibleNode, callType);
   const userPrompt = buildUserPrompt(
-    targetNode, ancestors, characterNodes, lockedQuestions, callType, department
+    targetNode,
+    ancestors,
+    characterNodes,
+    lockedQuestions,
+    callType,
+    department,
+    religions,
+    magics,
+    locations,
+    artifacts,
+    timelines,
+    organizations
   );
 
   return { systemPrompt, userPrompt };
@@ -79,6 +113,25 @@ function getConnectedCharacters(nodeId: string, nodes: GraphNode[], edges: Graph
   if (!node || node.type !== 'scene') return [];
   const characterIds = node.data.characters || [];
   return nodes.filter(n => n.type === 'character' && characterIds.includes(n.id));
+}
+
+function getConnectedWorldbuilding(nodeId: string, nodes: GraphNode[], edges: GraphEdge[]) {
+  const connectedNodeIds = new Set<string>();
+  edges.forEach(e => {
+    if (e.source === nodeId) connectedNodeIds.add(e.target);
+    if (e.target === nodeId) connectedNodeIds.add(e.source);
+  });
+
+  const connectedNodes = nodes.filter(n => connectedNodeIds.has(n.id));
+
+  return {
+    religions: connectedNodes.filter(n => n.type === 'religion'),
+    magics: connectedNodes.filter(n => n.type === 'magic'),
+    locations: connectedNodes.filter(n => n.type === 'location'),
+    artifacts: connectedNodes.filter(n => n.type === 'artifact'),
+    timelines: connectedNodes.filter(n => n.type === 'timeline'),
+    organizations: connectedNodes.filter(n => n.type === 'organization')
+  };
 }
 
 async function loadSkillsForCall(
@@ -142,7 +195,13 @@ function buildUserPrompt(
   characters: GraphNode[],
   questions: GraphNode[],
   callType: string,
-  department: string | null
+  department: string | null,
+  religions: GraphNode[] = [],
+  magics: GraphNode[] = [],
+  locations: GraphNode[] = [],
+  artifacts: GraphNode[] = [],
+  timelines: GraphNode[] = [],
+  organizations: GraphNode[] = []
 ): string {
   const sections: string[] = [];
 
@@ -162,6 +221,68 @@ function buildUserPrompt(
       sections.push(`Need: ${char.data.need || 'Unknown'}`);
       sections.push(`Wound: ${char.data.wound || 'Unknown'}`);
       sections.push(`Flaw: ${char.data.flaw || 'Unknown'}`);
+    });
+  }
+
+  if (religions.length > 0) {
+    sections.push('## WORLDBUILDING: RELIGION & MYTHOLOGY');
+    religions.forEach(r => {
+      sections.push(`### ${r.data.name || 'Unnamed Religion'}`);
+      if (r.data.sacredText) sections.push(`- Sacred Text: ${r.data.sacredText}`);
+      if (r.data.mythology) sections.push(`- Mythology: ${r.data.mythology}`);
+      if (r.data.hierarchy) sections.push(`- Hierarchy: ${r.data.hierarchy}`);
+      if (r.data.rituals) sections.push(`- Rituals: ${r.data.rituals}`);
+      if (r.data.holySymbols) sections.push(`- Holy Symbols: ${r.data.holySymbols}`);
+      if (r.data.laws) sections.push(`- Forbidden Acts/Laws: ${r.data.laws}`);
+    });
+  }
+
+  if (magics.length > 0) {
+    sections.push('## WORLDBUILDING: MAGIC SYSTEM & LAWS');
+    magics.forEach(m => {
+      sections.push(`### ${m.data.name || 'Unnamed Magic System'}`);
+      if (m.data.rules) sections.push(`- Mechanics/Rules: ${m.data.rules}`);
+      if (m.data.consequences) sections.push(`- Consequences/Toll: ${m.data.consequences}`);
+      if (m.data.limitations) sections.push(`- Limitations/Weaknesses: ${m.data.limitations}`);
+    });
+  }
+
+  if (locations.length > 0) {
+    sections.push('## WORLDBUILDING: GEOGRAPHY & LOCATIONS');
+    locations.forEach(l => {
+      sections.push(`### ${l.data.name || 'Unnamed Location'}`);
+      if (l.data.description) sections.push(`- Ambience/Description: ${l.data.description}`);
+      if (l.data.geography) sections.push(`- Layout/Geography: ${l.data.geography}`);
+      if (l.data.history) sections.push(`- Historical Lore: ${l.data.history}`);
+    });
+  }
+
+  if (artifacts.length > 0) {
+    sections.push('## WORLDBUILDING: ARTIFACTS & TECHNOLOGY');
+    artifacts.forEach(a => {
+      sections.push(`### ${a.data.name || 'Unnamed Artifact'}`);
+      if (a.data.origins) sections.push(`- Origins: ${a.data.origins}`);
+      if (a.data.powers) sections.push(`- Powers/Specs: ${a.data.powers}`);
+      if (a.data.dangerLevel) sections.push(`- Danger Level: ${a.data.dangerLevel.toUpperCase()}`);
+    });
+  }
+
+  if (timelines.length > 0) {
+    sections.push('## WORLDBUILDING: HISTORICAL TIMELINE');
+    timelines.forEach(t => {
+      sections.push(`- [${t.data.year || 'Unknown Era'}] ${t.data.name || 'Unnamed Event'}: ${t.data.eventSummary || ''} (Impact: ${t.data.historicalImpact || 'N/A'})`);
+    });
+  }
+
+  if (organizations.length > 0) {
+    sections.push('## WORLDBUILDING: FACTIONS & ORGANIZATIONS');
+    organizations.forEach(o => {
+      sections.push(`### ${o.data.name || 'Unnamed Organization'}`);
+      if (o.data.type) sections.push(`- Category: ${o.data.type}`);
+      if (o.data.leaders) sections.push(`- Leaders: ${o.data.leaders}`);
+      if (o.data.agenda) sections.push(`- Agenda: ${o.data.agenda}`);
+      if (o.data.allies) sections.push(`- Allies: ${o.data.allies}`);
+      if (o.data.enemies) sections.push(`- Enemies: ${o.data.enemies}`);
     });
   }
 

@@ -6,8 +6,30 @@
     "logline": "Isolated sandbox environment to design and test story elements individually.",
     "coverColor": "#059669",
     "createdAt": "2026-07-20T19:29:48.860Z",
-    "updatedAt": "2026-07-21T20:03:03.634Z",
+    "updatedAt": "2026-07-22T17:03:48.045Z",
     "nodeCount": 9,
     "status": "sandbox"
+  },
+  {
+    "id": "proj-template",
+    "name": "Procedural Narrative Blueprint",
+    "genre": "Procedural Guide",
+    "logline": "Complete connected template detailing Houdini-style procedural context flow and output data generation.",
+    "coverColor": "#8b5cf6",
+    "createdAt": "2026-07-21T20:24:29.156Z",
+    "updatedAt": "2026-07-21T20:28:53.199Z",
+    "nodeCount": 9,
+    "status": "template"
+  },
+  {
+    "id": "proj-test-sandbox",
+    "name": "Developer Testing Canvas",
+    "genre": "Node Interface Development",
+    "logline": "Dedicated test canvas to build, preview, and review node interfaces and properties separately.",
+    "coverColor": "#ef4444",
+    "createdAt": "2026-07-22T17:10:40.555Z",
+    "updatedAt": "2026-07-22T18:33:28.118Z",
+    "nodeCount": 13,
+    "status": "test-sandbox"
   }
 ]

@@ -3,6 +3,7 @@ import { Plus, Film, BookOpen, Search, Sparkles, Layout, FolderOpen, X, Layers, 
 import useProjectStore from '../store/projectStore.js';
 import { useLibraryStore } from '../store/libraryStore.js';
 import ProjectCard from '../components/ProjectCard.js';
+import SkillEditor from '../components/SkillEditor.js';
 
 interface ProjectDashboardProps {
   onOpenProject: (id: string) => void;
@@ -23,6 +24,9 @@ export default function ProjectDashboard({ onOpenProject }: ProjectDashboardProp
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
   const [isGuideOpen, setIsGuideOpen] = useState(false);
+  const [isRulesOpen, setIsRulesOpen] = useState(false);
+  const [selectedRulesProjectId, setSelectedRulesProjectId] = useState('proj-sandbox');
+  const [rulesActiveTab, setRulesActiveTab] = useState<'rules' | 'compatibility'>('rules');
   const [importJson, setImportJson] = useState('');
 
   const [toasts, setToasts] = useState<{ id: string; text: string; type: 'success' | 'delete' | 'info' }[]>([]);
@@ -408,7 +412,17 @@ export default function ProjectDashboard({ onOpenProject }: ProjectDashboardProp
           <span className="mac-dock-tooltip text-blue-400">Console</span>
         </button>
 
-        {/* 6. Screenplay Guide */}
+        {/* 6. Narrative Rules */}
+        <button 
+          onClick={() => setIsRulesOpen(true)}
+          className="mac-dock-item"
+          title="AI Rules & Node Schema Matrix"
+        >
+          <Cpu size={20} className="text-purple-400 shrink-0 animate-pulse" />
+          <span className="mac-dock-tooltip text-purple-400">Rules</span>
+        </button>
+
+        {/* 7. Screenplay Guide */}
         <button 
           onClick={() => setIsGuideOpen(true)}
           className="mac-dock-item"
@@ -662,6 +676,167 @@ export default function ProjectDashboard({ onOpenProject }: ProjectDashboardProp
                   Steer model generation using localized "Steering Guidelines" (Narrative Rules). Specify clear genre boundaries, dialogue styles (e.g. terse, lyrical, naturalistic), pacing rules, or visual themes. This ensures Gemini stays inside your aesthetic contract.
                 </p>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* RULES & COMPATIBILITY MODAL */}
+      {isRulesOpen && (
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center z-[999] p-4 animate-in fade-in duration-200">
+          <div className="bg-zinc-950 border border-zinc-900 rounded-3xl max-w-2xl w-full overflow-hidden flex flex-col h-[80vh] shadow-2xl relative">
+            <button 
+              onClick={() => setIsRulesOpen(false)}
+              className="absolute top-5 right-6 p-1 rounded text-zinc-500 hover:bg-zinc-900 transition hover:text-white cursor-pointer z-50"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="px-6 py-5 border-b border-zinc-900 bg-zinc-950 flex items-center gap-3">
+              <div className="p-2 bg-purple-950/40 text-purple-400 border border-purple-900/30 rounded-xl">
+                <Cpu size={18} />
+              </div>
+              <div className="flex-1">
+                <h2 className="font-serif italic text-lg text-white">Rules & Compatibility Center</h2>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-[9px] uppercase tracking-wider text-zinc-500 font-semibold">Active Profile:</span>
+                  <select
+                    value={selectedRulesProjectId}
+                    onChange={(e) => setSelectedRulesProjectId(e.target.value)}
+                    className="bg-zinc-900 text-zinc-300 text-[10px] font-semibold border border-zinc-800 rounded px-2 py-0.5 focus:outline-none cursor-pointer"
+                  >
+                    <option value="proj-sandbox">Testing Sandbox</option>
+                    {projects.filter((p: any) => p.id !== 'proj-sandbox').map((p: any) => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Tab Swapper */}
+            <div className="px-6 pt-3 flex border-b border-zinc-900/60 gap-4 bg-zinc-950">
+              <button
+                onClick={() => setRulesActiveTab('rules')}
+                className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                  rulesActiveTab === 'rules'
+                    ? 'border-purple-500 text-white'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                AI Steering Guidelines
+              </button>
+              <button
+                onClick={() => setRulesActiveTab('compatibility')}
+                className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                  rulesActiveTab === 'compatibility'
+                    ? 'border-purple-500 text-white'
+                    : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                }`}
+              >
+                Node Connection Schema
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 min-h-0 bg-zinc-950 select-none">
+              {rulesActiveTab === 'rules' ? (
+                <SkillEditor projectId={selectedRulesProjectId} />
+              ) : (
+                <div className="space-y-4 text-xs text-zinc-300 leading-relaxed font-light">
+                  {/* Compatibility Visual Diagram Grid */}
+                  <div className="bg-zinc-900/20 border border-zinc-900 p-3.5 rounded-xl space-y-1">
+                    <h4 className="font-semibold text-zinc-200">How Node Connections Flow:</h4>
+                    <p className="text-[10.5px] text-zinc-400">
+                      Link output handles (bottom port) to compatible input handles (top port). Establishing correct connection paths establishes the context hierarchy for draft compiler prompts.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-4">
+                    {[
+                      {
+                        name: 'Story Bible',
+                        color: 'text-purple-400 border-purple-900/40',
+                        inputs: 'None (Absolute Root)',
+                        outputs: 'Act, Character, Subplot Strand',
+                        desc: 'Holds core logline, setting, and story premise.'
+                      },
+                      {
+                        name: 'Character',
+                        color: 'text-rose-400 border-rose-900/40',
+                        inputs: 'Story Bible',
+                        outputs: 'Scene, Beat',
+                        desc: 'Maps character flaws and wants to narrative events.'
+                      },
+                      {
+                        name: 'Subplot Strand',
+                        color: 'text-teal-400 border-teal-900/40',
+                        inputs: 'Story Bible',
+                        outputs: 'Sequence, Scene',
+                        desc: 'Defines B-Story, thematic subplots, and dynamics.'
+                      },
+                      {
+                        name: 'Act',
+                        color: 'text-blue-400 border-blue-900/40',
+                        inputs: 'Story Bible',
+                        outputs: 'Sequence',
+                        desc: 'Major plot segments (Setup, Confrontation, Resolution).'
+                      },
+                      {
+                        name: 'Sequence',
+                        color: 'text-sky-400 border-sky-900/40',
+                        inputs: 'Act, Subplot Strand',
+                        outputs: 'Beat, Screenplay Draft',
+                        desc: 'Multi-scene blocks driving specific narrative tasks.'
+                      },
+                      {
+                        name: 'Beat',
+                        color: 'text-indigo-400 border-indigo-900/40',
+                        inputs: 'Sequence, Character',
+                        outputs: 'Scene',
+                        desc: 'Specific emotional shift or action/reaction step.'
+                      },
+                      {
+                        name: 'Scene',
+                        color: 'text-amber-400 border-amber-900/40',
+                        inputs: 'Beat, Subplot Strand, Character',
+                        outputs: 'Screenplay Draft, Decision Query',
+                        desc: 'Physical location slugline where actions are dramatized.'
+                      },
+                      {
+                        name: 'Screenplay Draft',
+                        color: 'text-slate-400 border-slate-900/40',
+                        inputs: 'Sequence, Scene',
+                        outputs: 'None (Leaf Node)',
+                        desc: 'Accepts both Sequence(s) and Scene(s) to produce the final draft pages.'
+                      },
+                      {
+                        name: 'Decision Query',
+                        color: 'text-pink-400 border-pink-900/40',
+                        inputs: 'Scene',
+                        outputs: 'None (Leaf Node)',
+                        desc: 'AI-generated interactive question to steer the plot.'
+                      }
+                    ].map((item, idx) => (
+                      <div key={idx} className="bg-zinc-950/60 border border-zinc-900 rounded-xl p-3.5 space-y-1.5 hover:border-zinc-800 transition">
+                        <div className="flex items-center justify-between border-b border-zinc-900/50 pb-1">
+                          <span className={`text-[10px] font-bold uppercase tracking-wider ${item.color}`}>{item.name}</span>
+                        </div>
+                        <p className="text-[10px] text-zinc-500 font-light leading-normal">{item.desc}</p>
+                        <div className="space-y-0.5 text-[9px] pt-1 border-t border-zinc-900/30">
+                          <div className="flex items-center justify-between text-zinc-400">
+                            <span className="text-zinc-600 font-bold uppercase tracking-wider text-[8px]">Inputs (←)</span>
+                            <span className="truncate max-w-[120px] font-medium text-right">{item.inputs}</span>
+                          </div>
+                          <div className="flex items-center justify-between text-zinc-400">
+                            <span className="text-purple-500 font-bold uppercase tracking-wider text-[8px]">Outputs (→)</span>
+                            <span className="truncate max-w-[120px] font-medium text-right">{item.outputs}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

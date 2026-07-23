@@ -1,0 +1,23 @@
+{
+  "id": "bible-test-001",
+  "type": "bible",
+  "position": {
+    "x": 250,
+    "y": 150
+  },
+  "data": {
+    "title": "Test Scenario: Alpha Build",
+    "premise": "Testing new character arcs and sequence nodes in isolation.",
+    "theme": "Trial and error",
+    "toneContract": {
+      "pacing": "Rapid prototyping",
+      "darkness": "Muted grey values",
+      "adventure": "Developer QA testing canvas"
+    },
+    "worldRules": {
+      "setting": "Port 3002 Node Testbed Server"
+    },
+    "twistMechanics": "Simulated prompt generation overrides",
+    "status": "draft"
+  }
+}

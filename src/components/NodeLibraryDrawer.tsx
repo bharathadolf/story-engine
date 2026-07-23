@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, X, PlusCircle, Trash2, User, Book, Layers, FileText, Sparkles, HelpCircle, ListOrdered } from 'lucide-react';
+import { Search, X, PlusCircle, Trash2, User, Book, Layers, FileText, Sparkles, HelpCircle, ListOrdered, Map, GitBranch } from 'lucide-react';
 import { useLibraryStore, NodeTemplate } from '../store/libraryStore.js';
 import useGraphStore from '../store/graphStore.js';
 import { useReactFlow } from '@xyflow/react';
@@ -61,6 +61,12 @@ export default function NodeLibraryDrawer({ isOpen, onClose, addToast }: NodeLib
       case 'scene': return <Sparkles size={14} className="text-amber-400" />;
       case 'beat': return <ListOrdered size={14} className="text-indigo-400" />;
       case 'question': return <HelpCircle size={14} className="text-pink-400" />;
+      case 'religion': return <Book size={14} className="text-red-500" />;
+      case 'magic': return <Sparkles size={14} className="text-fuchsia-500" />;
+      case 'location': return <Map size={14} className="text-emerald-500" />;
+      case 'artifact': return <Layers size={14} className="text-amber-500" />;
+      case 'timeline': return <ListOrdered size={14} className="text-orange-500" />;
+      case 'organization': return <GitBranch size={14} className="text-sky-500" />;
       default: return <Layers size={14} className="text-zinc-400" />;
     }
   };
@@ -75,6 +81,12 @@ export default function NodeLibraryDrawer({ isOpen, onClose, addToast }: NodeLib
       case 'scene': return 'border-l-amber-500 bg-amber-950/5';
       case 'beat': return 'border-l-indigo-500 bg-indigo-950/5';
       case 'question': return 'border-l-pink-500 bg-pink-950/5';
+      case 'religion': return 'border-l-red-600 bg-red-950/5';
+      case 'magic': return 'border-l-fuchsia-500 bg-fuchsia-950/5';
+      case 'location': return 'border-l-emerald-500 bg-emerald-950/5';
+      case 'artifact': return 'border-l-amber-500 bg-amber-950/5';
+      case 'timeline': return 'border-l-orange-500 bg-orange-950/5';
+      case 'organization': return 'border-l-sky-500 bg-sky-950/5';
       default: return 'border-l-zinc-500 bg-zinc-950/5';
     }
   };

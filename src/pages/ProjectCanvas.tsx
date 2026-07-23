@@ -30,6 +30,7 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
   // Custom states for the template library & toast overlay
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
+  const [rulesActiveTab, setRulesActiveTab] = useState<'rules' | 'compatibility'>('rules');
 
   const addToast = (text: string, type: 'success' | 'delete' | 'info') => {
     const id = Math.random().toString();
@@ -100,13 +101,134 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
                     <BookOpen size={20} />
                   </div>
                   <div>
-                    <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Narrative Steering Rules</h2>
-                    <p className="text-[10px] text-zinc-500">Configure AI generation constraints and structural guidelines</p>
+                    <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Rules & Compatibility Center</h2>
+                    <p className="text-[10px] text-zinc-500">Configure AI generation steering prompts and check node compatibility matrix</p>
                   </div>
                 </div>
 
-                <div className="flex-1 flex flex-col min-h-0 pr-1">
-                  <SkillEditor projectId={projectId} />
+                {/* Tab Swapper */}
+                <div className="flex border-b border-zinc-900/60 pb-1.5 gap-4 mb-4 shrink-0">
+                  <button
+                    onClick={() => setRulesActiveTab('rules')}
+                    className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                      rulesActiveTab === 'rules'
+                        ? 'border-purple-500 text-white'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    AI Steering Guidelines
+                  </button>
+                  <button
+                    onClick={() => setRulesActiveTab('compatibility')}
+                    className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                      rulesActiveTab === 'compatibility'
+                        ? 'border-purple-500 text-white'
+                        : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    Node Connection Schema
+                  </button>
+                </div>
+
+                <div className="flex-1 overflow-y-auto min-h-0 pr-1">
+                  {rulesActiveTab === 'rules' ? (
+                    <SkillEditor projectId={projectId} />
+                  ) : (
+                    <div className="space-y-4 text-xs text-zinc-300 leading-relaxed font-light">
+                      {/* Compatibility Visual Diagram Grid */}
+                      <div className="bg-zinc-900/20 border border-zinc-900 p-3.5 rounded-xl space-y-1">
+                        <h4 className="font-semibold text-zinc-200">How Node Connections Flow:</h4>
+                        <p className="text-[10.5px] text-zinc-400">
+                          Link output handles (bottom port) to compatible input handles (top port). Establishing correct connection paths establishes the context hierarchy for draft compiler prompts.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-4">
+                        {[
+                          {
+                            name: 'Story Bible',
+                            color: 'text-purple-400 border-purple-900/40',
+                            inputs: 'None (Absolute Root)',
+                            outputs: 'Act, Character, Subplot Strand',
+                            desc: 'Holds core logline, setting, and story premise.'
+                          },
+                          {
+                            name: 'Character',
+                            color: 'text-rose-400 border-rose-900/40',
+                            inputs: 'Story Bible',
+                            outputs: 'Scene, Beat',
+                            desc: 'Maps character flaws and wants to narrative events.'
+                          },
+                          {
+                            name: 'Subplot Strand',
+                            color: 'text-teal-400 border-teal-900/40',
+                            inputs: 'Story Bible',
+                            outputs: 'Sequence, Scene',
+                            desc: 'Defines B-Story, thematic subplots, and dynamics.'
+                          },
+                          {
+                            name: 'Act',
+                            color: 'text-blue-400 border-blue-900/40',
+                            inputs: 'Story Bible',
+                            outputs: 'Sequence',
+                            desc: 'Major plot segments (Setup, Confrontation, Resolution).'
+                          },
+                          {
+                            name: 'Sequence',
+                            color: 'text-sky-400 border-sky-900/40',
+                            inputs: 'Act, Subplot Strand',
+                            outputs: 'Beat, Screenplay Draft',
+                            desc: 'Multi-scene blocks driving specific narrative tasks.'
+                          },
+                          {
+                            name: 'Beat',
+                            color: 'text-indigo-400 border-indigo-900/40',
+                            inputs: 'Sequence, Character',
+                            outputs: 'Scene',
+                            desc: 'Specific emotional shift or action/reaction step.'
+                          },
+                          {
+                            name: 'Scene',
+                            color: 'text-amber-400 border-amber-900/40',
+                            inputs: 'Beat, Subplot Strand, Character',
+                            outputs: 'Screenplay Draft, Decision Query',
+                            desc: 'Physical location slugline where actions are dramatized.'
+                          },
+                          {
+                            name: 'Screenplay Draft',
+                            color: 'text-slate-400 border-slate-900/40',
+                            inputs: 'Sequence, Scene',
+                            outputs: 'None (Leaf Node)',
+                            desc: 'Accepts both Sequence(s) and Scene(s) to produce the final draft pages.'
+                          },
+                          {
+                            name: 'Decision Query',
+                            color: 'text-pink-400 border-pink-900/40',
+                            inputs: 'Scene',
+                            outputs: 'None (Leaf Node)',
+                            desc: 'AI-generated interactive question to steer the plot.'
+                          }
+                        ].map((item, idx) => (
+                          <div key={idx} className="bg-zinc-950/60 border border-zinc-900 rounded-xl p-3.5 space-y-1.5 hover:border-zinc-800 transition">
+                            <div className="flex items-center justify-between border-b border-zinc-900/50 pb-1">
+                              <span className={`text-[10px] font-bold uppercase tracking-wider ${item.color}`}>{item.name}</span>
+                            </div>
+                            <p className="text-[10px] text-zinc-500 font-light leading-normal">{item.desc}</p>
+                            <div className="space-y-0.5 text-[9px] pt-1 border-t border-zinc-900/30">
+                              <div className="flex items-center justify-between text-zinc-400">
+                                <span className="text-zinc-600 font-bold uppercase tracking-wider text-[8px]">Inputs (←)</span>
+                                <span className="truncate max-w-[120px] font-medium text-right">{item.inputs}</span>
+                              </div>
+                              <div className="flex items-center justify-between text-zinc-400">
+                                <span className="text-purple-500 font-bold uppercase tracking-wider text-[8px]">Outputs (→)</span>
+                                <span className="truncate max-w-[120px] font-medium text-right">{item.outputs}</span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -248,13 +370,134 @@ export default function ProjectCanvas({ projectId, onBackToDashboard }: ProjectC
                   <BookOpen size={20} />
                 </div>
                 <div>
-                  <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Narrative Steering Rules</h2>
-                  <p className="text-[10px] text-zinc-500">Configure AI generation constraints and structural guidelines</p>
+                  <h2 className="text-sm font-bold text-zinc-100 uppercase tracking-wider">Rules & Compatibility Center</h2>
+                  <p className="text-[10px] text-zinc-500">Configure AI generation steering prompts and check node compatibility matrix</p>
                 </div>
               </div>
 
-              <div className="flex-1 flex flex-col min-h-0 pr-1">
-                <SkillEditor projectId={projectId} />
+              {/* Tab Swapper */}
+              <div className="flex border-b border-zinc-900/60 pb-1.5 gap-4 mb-4 shrink-0">
+                <button
+                  onClick={() => setRulesActiveTab('rules')}
+                  className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                    rulesActiveTab === 'rules'
+                      ? 'border-purple-500 text-white'
+                      : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  AI Steering Guidelines
+                </button>
+                <button
+                  onClick={() => setRulesActiveTab('compatibility')}
+                  className={`text-[10px] uppercase tracking-wider pb-2 border-b-2 transition font-bold cursor-pointer ${
+                    rulesActiveTab === 'compatibility'
+                      ? 'border-purple-500 text-white'
+                      : 'border-transparent text-zinc-500 hover:text-zinc-300'
+                  }`}
+                >
+                  Node Connection Schema
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto min-h-0 pr-1">
+                {rulesActiveTab === 'rules' ? (
+                  <SkillEditor projectId={projectId} />
+                ) : (
+                  <div className="space-y-4 text-xs text-zinc-300 leading-relaxed font-light">
+                    {/* Compatibility Visual Diagram Grid */}
+                    <div className="bg-zinc-900/20 border border-zinc-900 p-3.5 rounded-xl space-y-1">
+                      <h4 className="font-semibold text-zinc-200">How Node Connections Flow:</h4>
+                      <p className="text-[10.5px] text-zinc-400">
+                        Link output handles (bottom port) to compatible input handles (top port). Establishing correct connection paths establishes the context hierarchy for draft compiler prompts.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-4">
+                      {[
+                        {
+                          name: 'Story Bible',
+                          color: 'text-purple-400 border-purple-900/40',
+                          inputs: 'None (Absolute Root)',
+                          outputs: 'Act, Character, Subplot Strand',
+                          desc: 'Holds core logline, setting, and story premise.'
+                        },
+                        {
+                          name: 'Character',
+                          color: 'text-rose-400 border-rose-900/40',
+                          inputs: 'Story Bible',
+                          outputs: 'Scene, Beat',
+                          desc: 'Maps character flaws and wants to narrative events.'
+                        },
+                        {
+                          name: 'Subplot Strand',
+                          color: 'text-teal-400 border-teal-900/40',
+                          inputs: 'Story Bible',
+                          outputs: 'Sequence, Scene',
+                          desc: 'Defines B-Story, thematic subplots, and dynamics.'
+                        },
+                        {
+                          name: 'Act',
+                          color: 'text-blue-400 border-blue-900/40',
+                          inputs: 'Story Bible',
+                          outputs: 'Sequence',
+                          desc: 'Major plot segments (Setup, Confrontation, Resolution).'
+                        },
+                        {
+                          name: 'Sequence',
+                          color: 'text-sky-400 border-sky-900/40',
+                          inputs: 'Act, Subplot Strand',
+                          outputs: 'Beat, Screenplay Draft',
+                          desc: 'Multi-scene blocks driving specific narrative tasks.'
+                        },
+                        {
+                          name: 'Beat',
+                          color: 'text-indigo-400 border-indigo-900/40',
+                          inputs: 'Sequence, Character',
+                          outputs: 'Scene',
+                          desc: 'Specific emotional shift or action/reaction step.'
+                        },
+                        {
+                          name: 'Scene',
+                          color: 'text-amber-400 border-amber-900/40',
+                          inputs: 'Beat, Subplot Strand, Character',
+                          outputs: 'Screenplay Draft, Decision Query',
+                          desc: 'Physical location slugline where actions are dramatized.'
+                        },
+                        {
+                          name: 'Screenplay Draft',
+                          color: 'text-slate-400 border-slate-900/40',
+                          inputs: 'Sequence, Scene',
+                          outputs: 'None (Leaf Node)',
+                          desc: 'Accepts both Sequence(s) and Scene(s) to produce the final draft pages.'
+                        },
+                        {
+                          name: 'Decision Query',
+                          color: 'text-pink-400 border-pink-900/40',
+                          inputs: 'Scene',
+                          outputs: 'None (Leaf Node)',
+                          desc: 'AI-generated interactive question to steer the plot.'
+                        }
+                      ].map((item, idx) => (
+                        <div key={idx} className="bg-zinc-950/60 border border-zinc-900 rounded-xl p-3.5 space-y-1.5 hover:border-zinc-800 transition">
+                          <div className="flex items-center justify-between border-b border-zinc-900/50 pb-1">
+                            <span className={`text-[10px] font-bold uppercase tracking-wider ${item.color}`}>{item.name}</span>
+                          </div>
+                          <p className="text-[10px] text-zinc-500 font-light leading-normal">{item.desc}</p>
+                          <div className="space-y-0.5 text-[9px] pt-1 border-t border-zinc-900/30">
+                            <div className="flex items-center justify-between text-zinc-400">
+                              <span className="text-zinc-600 font-bold uppercase tracking-wider text-[8px]">Inputs (←)</span>
+                              <span className="truncate max-w-[120px] font-medium text-right">{item.inputs}</span>
+                            </div>
+                            <div className="flex items-center justify-between text-zinc-400">
+                              <span className="text-purple-500 font-bold uppercase tracking-wider text-[8px]">Outputs (→)</span>
+                              <span className="truncate max-w-[120px] font-medium text-right">{item.outputs}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
